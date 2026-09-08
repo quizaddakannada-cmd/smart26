@@ -1,0 +1,63 @@
+services:
+  - type: web
+    name: wealth-ai-pro
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node server/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: APP_PIN
+        sync: false
+      # FIX (audit H-4): API_TOKEN was missing from the blueprint while the
+      # server REQUIRES it for /api/cloud/* — every cloud-sync call returned
+      # 503 out of the box and the frontend silently fell back to the
+      # (leaked, now removed) client-side hardcoded token.
+      - key: API_TOKEN
+        sync: false
+      - key: VITE_API_TOKEN
+        sync: false
+      - key: VITE_ENCRYPTION_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLAUDE_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: CEREBRAS_API_KEY
+        sync: false
+      - key: HF_API_KEY
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: TG_TOKEN
+        sync: false
+      - key: TG_CHAT_ID
+        sync: false
+      - key: API_URL
+        sync: false
+      # DURABLE PAPER-TRADE HISTORY (optional but recommended on the
+      # free plan): Render wipes server/data/ on every restart, so the
+      # engine mirrors paper-trades.json to this GitHub repo/branch.
+      # Fine-grained PAT with Contents: Read+Write on the repo.
+      - key: GITHUB_BACKUP_TOKEN
+        sync: false
+      - key: GITHUB_BACKUP_REPO
+        sync: false
+      - key: GITHUB_BACKUP_BRANCH
+        sync: false
+      - key: FINNHUB_API_KEY
+        sync: false
+      - key: DHAN_CLIENT_ID
+        sync: false
+      - key: DHAN_ACCESS_TOKEN
+        sync: false
